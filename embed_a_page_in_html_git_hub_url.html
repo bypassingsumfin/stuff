@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Embedded Page Viewer</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --fg: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --card: #111827;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+      background: radial-gradient(1200px 800px at 100% -10%, #0b1023 0%, var(--bg) 60%);
+      color: var(--fg);
+    }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(15,23,42,0.85), rgba(15,23,42,0.55));
+      border-bottom: 1px solid rgba(148,163,184,0.2);
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    header h1 { font-size: 18px; margin: 0; font-weight: 600; letter-spacing: .2px; }
+    header input[type="url"] {
+      flex: 1; max-width: 900px;
+      background: var(--card);
+      color: var(--fg);
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: var(--radius);
+      padding: 12px 12px;
+      outline: none;
+    }
+    header button, a.button {
+      background: var(--accent);
+      color: #001018;
+      border: none; border-radius: var(--radius);
+      padding: 10px 14px; font-weight: 600; text-decoration: none;
+      cursor: pointer;
+      transition: transform .05s ease;
+    }
+    header button:active, a.button:active { transform: translateY(1px); }
+
+    .wrap { padding: 16px; }
+    .card {
+      background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(17,24,39,0.75));
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: calc(var(--radius) + 8px);
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .note { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    iframe {
+      width: 100%; height: 75vh; border: none; border-radius: calc(var(--radius) + 8px);
+      background: #0b1023;
+    }
+    .row { display: flex; gap: 10px; align-items: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Page Embedder</h1>
+    <input id="url" type="url" placeholder="Enter a URL…" value="https://github.com/copilot/c/68c54370-954e-46b2-8edb-7e7105a6951c" />
+    <button id="load">Load</button>
+    <a id="openNew" class="button" target="_blank" rel="noopener">Open</a>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <iframe id="viewer" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
+      <p class="note" id="note">
+        Note: Many sites (including GitHub) set security headers (CSP/X-Frame-Options) that block embedding in an iframe. If the page doesn’t appear, click “Open” to view it in a new tab, or replace it with a page that allows embedding.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const urlInput = document.getElementById('url');
+    const viewer = document.getElementById('viewer');
+    const loadBtn = document.getElementById('load');
+    const openNew = document.getElementById('openNew');
+
+    function safeUrl(u) {
+      try { return new URL(u).toString(); } catch { return null; }
+    }
+
+    function load(u) {
+      const s = safeUrl(u || urlInput.value);
+      if (!s) return alert('Enter a valid URL');
+      viewer.src = s;
+      openNew.href = s;
+    }
+
+    loadBtn.addEventListener('click', () => load());
+    urlInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') load(); });
+
+    // initial load
+    load(urlInput.value);
+  </script>
+</body>
+</html>

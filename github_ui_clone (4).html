@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #161b22;
+      border-bottom: 1px solid #30363d;
+      position: relative;
+    }
+
+    /* Left side: menu + logo + title */
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header .left img {
+      height: 25px;
+      opacity: 0.6;
+    }
+
+    header .left span {
+      color: #f0f6fc;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    /* Right side: search */
+    header .right input {
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 5px 10px;
+      color: #c9d1d9;
+    }
+
+    /* Hamburger button */
+    .menu-btn {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      cursor: pointer;
+      color: #c9d1d9;
+      font-size: 16px;
+    }
+
+    .menu-dropdown {
+      position: relative;
+    }
+
+    /* Dropdown menu */
+    .menu-content {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      overflow: hidden;
+      animation: slideDown 0.3s ease;
+      z-index: 10;
+    }
+
+    .menu-content button {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      text-align: left;
+      color: #c9d1d9;
+      cursor: pointer;
+      width: 150px;
+    }
+
+    .menu-content button:hover {
+      background-color: #21262d;
+    }
+
+    /* Dropdown animation */
+    @keyframes slideDown {
+      from {opacity: 0; transform: translateY(-10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    /* GitHub-style Main Menu */
+    .card {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .action-buttons button {
+      background-color: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 20px;
+      padding: 6px 12px;
+      margin: 3px;
+      color: #c9d1d9;
+      cursor: pointer;
+    }
+
+    .action-buttons button:hover {
+      background-color: #30363d;
+    }
+
+    /* Game grid */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .game-card {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      background-color: #21262d;
+    }
+
+    /* Game player iframe */
+    #gamePlayer {
+      display: none;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    #gamePlayer iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 6px;
+    }
+
+    #gamePlayer button {
+      margin-top: 10px;
+      align-self: flex-start;
+      background-color: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: #c9d1d9;
+      cursor: pointer;
+    }
+
+    #gamePlayer button:hover {
+      background-color: #30363d;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="left">
+      <!-- Hamburger -->
+      <div class="menu-dropdown">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <div class="menu-content" id="menuContent">
+          <button onclick="showTab('main')">Main Menu</button>
+          <button onclick="showTab('games')">Games</button>
+          <button onclick="showTab('repos')">Repos</button>
+        </div>
+      </div>
+
+      <!-- GitHub icon -->
+      <img src="https://github.githubassets.com/favicons/favicon.svg" alt="logo">
+
+      <!-- Title -->
+      <span>Dashboard</span>
+    </div>
+
+    <div class="right">
+      <input type="text" placeholder="Type / to search">
+    </div>
+  </header>
+
+  <div class="content" id="main">
+    <div class="card">
+      <h2>Home</h2>
+      <input type="text" placeholder="da"
+             style="background-color:#0d1117;border:1px solid #30363d;
+                    border-radius:6px;padding:5px;width:300px;color:#c9d1d9;">
+      <div class="action-buttons">
+        <button>Get started with GitHub</button>
+        <button>Learn to code</button>
+        <button>Create a web app</button>
+        <button>Create a profile README</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Getting started</h2>
+      <p>Complete your profile and start creating repositories.</p>
+    </div>
+  </div>
+
+  <div class="content" id="games" style="display:none;">
+    <h2>Games</h2>
+    <div class="game-grid">
+      <!-- Add more game cards here -->
+      <div class="game-card" onclick="playGame('file:///C:/Users/11cva/Downloads/embed_a_page_in_html_git_hub_url.html')">Bypasser</div>
+      <div class="game-card" onclick="playGame('https://example.com/game2')">Game 2</div>
+      <div class="game-card" onclick="playGame('https://example.com/game3')">Game 3</div>
+    </div>
+
+    <div id="gamePlayer">
+      <iframe id="gameFrame"></iframe>
+      <button onclick="fullscreenGame()">Fullscreen</button>
+      <button onclick="closeGame()">Close Game</button>
+    </div>
+  </div>
+
+  <div class="content" id="repos" style="display:none;">
+    <h2>Repos</h2>
+    <p>Here will be the repositories.</p>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("menuContent");
+      menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+      document.getElementById("menuContent").style.display = "none";
+    }
+
+    function playGame(url) {
+      document.getElementById("gameFrame").src = url;
+      document.getElementById("gamePlayer").style.display = "flex";
+    }
+
+    function fullscreenGame() {
+      const iframe = document.getElementById("gameFrame");
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.mozRequestFullScreen) {
+        iframe.mozRequestFullScreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    function closeGame() {
+      document.getElementById("gameFrame").src = "";
+      document.getElementById("gamePlayer").style.display = "none";
+    }
+  </script>
+</body>
+</html>
